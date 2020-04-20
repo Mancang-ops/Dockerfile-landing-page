@@ -6,6 +6,33 @@ metadata:
     name: production
 
 ---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: p-lp-deployment
+  namespace: production
+  labels:
+    app: p-jenkins-lp
+    env: production
+spec:
+  selector:
+    matchLabels:
+      app: p-jenkins-lp
+      env: production
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: p-jenkins-lp
+        env: production
+    spec:
+      containers:
+      - name: p-jenkins-lp
+        image: $DOCKER_REGISTRY/$DOCKER_IMAGE_NAME:$BUILD_NUMBER
+        ports:
+        - containerPort: 80
+
+---
 apiVersion: v1
 kind: Service
 metadata:
